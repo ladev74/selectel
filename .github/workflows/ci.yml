@@ -1,0 +1,31 @@
+name: build and test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: build and test
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25.7"
+          cache: true
+
+      - name: download dependencies
+        run: go mod download
+
+      - name: build
+        run: go build ./...
+
+      - name: run tests
+        run: go test ./... -v
