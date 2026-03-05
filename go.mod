@@ -1,4 +1,4 @@
-module linter
+module github.com/ladev74/linter
 
 go 1.25.7
 
@@ -10,6 +10,7 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.6.0 // indirect
+	github.com/golangci/plugin-module-register v0.1.2 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/mod v0.33.0 // indirect
