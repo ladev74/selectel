@@ -15,13 +15,13 @@ import (
 // TODO: указать почему в тестах нет zap
 
 func main() {
-	cfg, err := config.New("config/example.yaml")
+	cfg, err := config.New("/home/ladev/projects/linter/config/example.yaml")
 	if err != nil {
 		log.Fatalf("failed to parse config: %v", err)
 	}
 
 	singlechecker.Main(analyzer.New(&cfg.Analyzer))
-
+	//
 	logger := zap.Logger{}
 
 	logger.Info("StartIng linter")
@@ -31,10 +31,4 @@ func main() {
 	logger.Info("connection failed!!!")
 	logger.Info("warning: something went wrong...")
 	logger.Info("passive pass: password:")
-
-	//path := ""
-	//zapPath := "zap"
-	//slogPath := "slog"
-	//
-	//fmt.Println(path == slogPath) || (path == zapPath)
 }

@@ -8,26 +8,26 @@ import (
 func CheckRules(cfg Config, msg string) string {
 	msg = strings.TrimSpace(msg)
 
-	if cfg.LowercaseStart.Enabled && !lowercaseStart(msg) {
+	if cfg.LowercaseStart.Enabled && !IsLowercaseStart(msg) {
 		return StartsWithLowerErrMsg
 	}
 
-	if cfg.EnglishOnly.Enabled && !englishOnly(msg) {
+	if cfg.EnglishOnly.Enabled && !IsEnglishOnly(msg) {
 		return EnglishOnlyErrMsg
 	}
 
-	if cfg.DisallowSensitiveData.Enabled && !disallowSensitiveData(msg, cfg.DisallowSensitiveData.Patterns) {
+	if cfg.DisallowSensitiveData.Enabled && !HasNoDisallowSensitiveData(msg, cfg.DisallowSensitiveData.Patterns) {
 		return DisallowSensitiveDataErrMsg
 	}
 
-	if cfg.DisallowSpecialCharacters.Enabled && !disallowSpecialCharacters(msg) {
+	if cfg.DisallowSpecialCharacters.Enabled && !HasNoDisallowSpecialCharacters(msg) {
 		return DisallowSpecialCharactersErrMsg
 	}
 
 	return ""
 }
 
-func lowercaseStart(s string) bool {
+func IsLowercaseStart(s string) bool {
 	for _, r := range s {
 		if unicode.IsLetter(r) {
 			return unicode.IsLower(r)
@@ -37,7 +37,7 @@ func lowercaseStart(s string) bool {
 	return true
 }
 
-func englishOnly(s string) bool {
+func IsEnglishOnly(s string) bool {
 	for _, r := range s {
 		if unicode.IsLetter(r) && !unicode.Is(unicode.Latin, r) {
 			return false
@@ -47,7 +47,7 @@ func englishOnly(s string) bool {
 	return true
 }
 
-func disallowSpecialCharacters(s string) bool {
+func HasNoDisallowSpecialCharacters(s string) bool {
 	for _, r := range s {
 		if unicode.IsLetter(r) || unicode.IsDigit(r) || unicode.IsSpace(r) {
 			continue
@@ -59,7 +59,7 @@ func disallowSpecialCharacters(s string) bool {
 	return true
 }
 
-func disallowSensitiveData(msg string, patterns []string) bool {
+func HasNoDisallowSensitiveData(msg string, patterns []string) bool {
 	words := splitToWords(msg)
 
 	for _, word := range words {

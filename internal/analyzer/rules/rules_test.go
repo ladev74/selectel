@@ -97,7 +97,7 @@ func TestLowercaseStart(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := lowercaseStart(tt.msg)
+			got := IsLowercaseStart(tt.msg)
 			if got != tt.want {
 				t.Errorf("lowercaseStart(%s) got: %v, want: %v", tt.msg, got, tt.want)
 			}
@@ -155,7 +155,7 @@ func TestEnglishOnly(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := englishOnly(tt.msg)
+			got := IsEnglishOnly(tt.msg)
 			if got != tt.want {
 				t.Errorf("englishOnly(%s) got: %v, want: %v", tt.msg, got, tt.want)
 			}
@@ -208,7 +208,7 @@ func TestDisallowSpecialCharacters(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := disallowSpecialCharacters(tt.msg)
+			got := HasNoDisallowSpecialCharacters(tt.msg)
 			if got != tt.want {
 				t.Errorf("disallowSpecialCharacters(%s) got: %v, want: %v", tt.msg, got, tt.want)
 			}
@@ -263,7 +263,7 @@ func TestDisallowSensitiveData(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := disallowSensitiveData(tt.msg, tt.patters)
+			got := HasNoDisallowSensitiveData(tt.msg, tt.patters)
 			if got != tt.want {
 				t.Errorf("disallowSensitiveData(%s) got: %v, want: %v, patters: %v", tt.msg, got, tt.want, tt.patters)
 			}

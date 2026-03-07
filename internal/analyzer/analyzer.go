@@ -1,6 +1,7 @@
 package analyzer
 
 import (
+	"fmt"
 	"go/ast"
 	"go/token"
 	"go/types"
@@ -8,6 +9,7 @@ import (
 
 	"golang.org/x/tools/go/analysis"
 
+	"github.com/ladev74/linter/internal/analyzer/fixes"
 	"github.com/ladev74/linter/internal/analyzer/rules"
 )
 
@@ -40,6 +42,12 @@ func New(cfg *Config) *analysis.Analyzer {
 
 func Run(pass *analysis.Pass, cfg *Config) (interface{}, error) {
 	for _, file := range pass.Files {
+		// покажем filename первого токена из fset, чтобы убедиться, что это файлы ожидаемого проекта
+		pos := pass.Fset.Position(file.Pos())
+		fmt.Println("  file:", pos.Filename)
+	}
+
+	for _, file := range pass.Files {
 		ast.Inspect(file, func(n ast.Node) bool {
 			call, ok := n.(*ast.CallExpr)
 			if !ok {
@@ -50,6 +58,8 @@ func Run(pass *analysis.Pass, cfg *Config) (interface{}, error) {
 			if !ok {
 				return true
 			}
+
+			fmt.Println("  found selector:", sel.Sel.Name, "at", pass.Fset.Position(sel.Pos()))
 
 			if !isSupportedLogger(pass, sel) {
 				return true
@@ -68,7 +78,22 @@ func Run(pass *analysis.Pass, cfg *Config) (interface{}, error) {
 
 			errMsg := rules.CheckRules(cfg.Rules, msg)
 			if errMsg != "" {
-				pass.Reportf(lit.Pos(), "%s", errMsg)
+				var fixesArr []analysis.SuggestedFix
+
+				if cfg.Rules.LowercaseStart.Enabled && !rules.IsLowercaseStart(msg) {
+					fixesArr = append(fixesArr, fixes.FixLowercaseStart(lit))
+				}
+
+				if cfg.Rules.DisallowSpecialCharacters.Enabled && !rules.HasNoDisallowSpecialCharacters(msg) {
+					fixesArr = append(fixesArr, fixes.FixDisallowSpecialChars(lit))
+				}
+
+				pass.Report(analysis.Diagnostic{
+					Pos:            lit.Pos(),
+					End:            lit.End(),
+					Message:        errMsg,
+					SuggestedFixes: fixesArr,
+				})
 			}
 
 			return true
