@@ -1,8 +1,6 @@
 package plugin
 
 import (
-	"fmt"
-
 	"github.com/golangci/plugin-module-register/register"
 	"golang.org/x/tools/go/analysis"
 
@@ -35,9 +33,6 @@ func New(settings any) (register.LinterPlugin, error) {
 		cfg.Rules = fileCfg.Analyzer.Rules
 	}
 
-	fmt.Printf("%+v\n", cfg)
-
-	fmt.Println("New")
 	return &plugin{
 		cfg: cfg,
 	}, nil
@@ -45,11 +40,10 @@ func New(settings any) (register.LinterPlugin, error) {
 
 func (p *plugin) BuildAnalyzers() ([]*analysis.Analyzer, error) {
 	a := analyzer.New(&p.cfg)
-	fmt.Println("BuildAnalyzers")
+
 	return []*analysis.Analyzer{a}, nil
 }
 
 func (p *plugin) GetLoadMode() string {
-	fmt.Println("GetLoadMode")
 	return register.LoadModeTypesInfo
 }

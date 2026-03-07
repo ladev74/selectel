@@ -2,9 +2,7 @@ package main
 
 import (
 	"log"
-	"log/slog"
 
-	"github.com/go-uber/zap"
 	"golang.org/x/tools/go/analysis/singlechecker"
 
 	"github.com/ladev74/linter/internal/analyzer"
@@ -21,14 +19,4 @@ func main() {
 	}
 
 	singlechecker.Main(analyzer.New(&cfg.Analyzer))
-	//
-	logger := zap.Logger{}
-
-	logger.Info("StartIng linter")
-	slog.Info("StartIng linter")
-	logger.Info("хых")
-	logger.Info("server started!🚀")
-	logger.Info("connection failed!!!")
-	logger.Info("warning: something went wrong...")
-	logger.Info("passive pass: password:")
 }
