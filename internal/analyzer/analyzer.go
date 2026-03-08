@@ -14,7 +14,7 @@ import (
 
 const (
 	slogPath = "log/slog"
-	zapPath  = "github.com/go-uber/zap"
+	zapPath  = "go.uber.org/zap"
 )
 
 type Config struct {

@@ -1,7 +1,7 @@
 package rules
 
 type Config struct {
-	LowercaseStart            LowercaseStart            `yaml:"lowercase_start" json:"lowercase_start"`
+	LowercaseStart            LowercaseStart            `yaml:"lowercase_start" json:"lowercase_start" `
 	EnglishOnly               EnglishOnly               `yaml:"english_only" json:"english_only"`
 	DisallowSpecialCharacters DisallowSpecialCharacters `yaml:"disallow_special_characters" json:"disallow_special_characters"`
 	DisallowSensitiveData     DisallowSensitiveData     `yaml:"disallow_sensitive_data" json:"disallow_sensitive_data"`
